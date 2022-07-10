@@ -11,11 +11,12 @@ print("Total arguments passed:", n)
  
 # Arguments passed
 print("\nName of Python script:", sys.argv[0])
-#print("\nName of filepath:", sys.argv[1])
+print("\nName of filepath:", sys.argv[1])
 
 spark = spark_build("ingest-api")
 config = read_config()
-landingpath = config['LandingLayerSettings']['landingpath']
+landingpath = config['LandingLayerSettings']['landingpath'] + "/" + sys.argv[1]
+print (landingpath)
 # Creating an empty RDD to make a DataFrame with no data
 emp_RDD = spark.sparkContext.emptyRDD()
 # Defining the schema of the DataFrame
