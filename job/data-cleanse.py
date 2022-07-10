@@ -6,5 +6,5 @@ spark = spark_build("data-cleanse")
 config = read_config()
 landingpath = config['LandingLayerSettings']['landingpath']
 # Read from HDFS
-df_load = spark.read.option("header","true").csv(landingpath)
+df_load = spark.read.option("header","true").parquet(landingpath)
 df_load.show()
