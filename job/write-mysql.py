@@ -1,14 +1,18 @@
-import mysql.connector
+import sys
+from app.io.spark import spark_build
+from app.config.helper import read_config
+from pyspark.sql.types import *
 
-mydb = mysql.connector.connect(
-  host="localhost",
-  user="admin",
-  password="Killzone@2"
-)
-print(mydb)
+spark = spark_build("data-write")
+config = read_config()
 
-mycursor = mydb.cursor()
-mycursor.execute("SELECT table_name FROM information_schema.tables where table_schema = 'schipol_api'")
-myresult = mycursor.fetchall()
-for x in myresult:
-  print(x)
+cleansedpath = config['CleansedLayerSettings']['cleansedpath'] + "/" + sys.argv[1]
+
+df = spark.read.option("header","true").parquet(cleansedpath)
+df.show()
+df.write.format('jdbc').options(
+      url='jdbc:mysql://localhost/schipol_api',
+      driver='com.mysql.jdbc.Driver',
+      dbtable='flights',
+      user='admin',
+      password='Killzone@2').mode('append').save()
