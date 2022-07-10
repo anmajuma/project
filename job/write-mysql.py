@@ -11,8 +11,8 @@ cleansedpath = config['CleansedLayerSettings']['cleansedpath'] + "/" + sys.argv[
 df = spark.read.option("header","true").parquet(cleansedpath)
 df.show()
 df.write.format('jdbc').options(
-      url='jdbc:mysql://localhost/schipol_api',
+      url='jdbc:mysql://schipol-api.cq0xiuzh9tks.us-east-1.rds.amazonaws.com:3306/schipol_api',
       driver='com.mysql.jdbc.Driver',
       dbtable='flights',
       user='admin',
-      password='Killzone@2').mode('append').save()
+      password='Killzone2').mode('append').save()
